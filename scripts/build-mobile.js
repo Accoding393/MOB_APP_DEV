@@ -1,0 +1,11 @@
+import 'dotenv/config';
+import { build } from 'esbuild';
+import { mkdir, copyFile, cp, writeFile } from 'node:fs/promises';
+const apiUrl = process.env.MOBILE_API_URL || '';
+if (apiUrl && !/^https:\/\//.test(apiUrl)) throw new Error('MOBILE_API_URL must use HTTPS.');
+await mkdir('mobile-dist/vendor', { recursive: true });
+await build({ entryPoints: ['client/mobile-entry.js'], bundle: true, outfile: 'mobile-dist/app.js', format: 'esm', define: { __API_URL__: JSON.stringify(apiUrl) } });
+await copyFile('client/styles.css', 'mobile-dist/styles.css');
+await cp('node_modules/leaflet/dist', 'mobile-dist/vendor/leaflet', { recursive: true });
+await writeFile('mobile-dist/index.html', `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#172033"><title>College Resource Management System</title><link rel="stylesheet" href="vendor/leaflet/leaflet.css"><link rel="stylesheet" href="styles.css"></head><body class="native-app"><main id="app"></main><div id="toast-region" class="toast-region" aria-live="polite"></div><script src="vendor/leaflet/leaflet.js"></script><script type="module" src="app.js"></script></body></html>`);
+console.log(apiUrl ? `Android assets prepared for ${apiUrl}` : 'Android assets prepared; set MOBILE_API_URL before installing.');

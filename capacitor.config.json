@@ -1,0 +1,8 @@
+{
+  "appId": "edu.campus.crms",
+  "appName": "College Resource Management System",
+  "webDir": "mobile-dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

@@ -1,0 +1,15 @@
+node_modules/
+.env
+*.log
+coverage/
+
+mobile-dist/
+android/.gradle/
+android/local.properties
+android/**/build/
+android/app/src/main/assets/public/
+android/app/google-services.json
+*.jks
+*.keystore
+.env.*
+!.env.example
